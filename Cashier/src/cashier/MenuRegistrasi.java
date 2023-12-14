@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package programkasir;
+package cashier;
 
 /**
  *
@@ -11,7 +11,7 @@ package programkasir;
 public class MenuRegistrasi extends javax.swing.JFrame {
 
     /**
-     * Creates new form MenuBarang
+     * Creates new form MenuRegistrasi1
      */
     public MenuRegistrasi() {
         initComponents();
@@ -26,96 +26,36 @@ public class MenuRegistrasi extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        text_IDUser = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        text_username = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        text_password = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        combo_id_level = new javax.swing.JComboBox<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tabel_registasi = new javax.swing.JTable();
+        text_namauser = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         btn_input = new javax.swing.JButton();
         btn_update = new javax.swing.JButton();
         btn_delete = new javax.swing.JButton();
         btn_menubarang = new javax.swing.JButton();
         btn_logout = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        text_namauser = new javax.swing.JTextField();
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        combo_id_level = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabel_registasi = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        text_password = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        text_username = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        text_IDUser = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("MENU REGISTASI");
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ID User");
-
-        text_IDUser.addActionListener(new java.awt.event.ActionListener() {
+        text_namauser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                text_IDUserActionPerformed(evt);
+                text_namauserActionPerformed(evt);
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel3.setText("Usename");
-
-        text_username.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                text_usernameActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel4.setText("Password");
-
-        text_password.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                text_passwordActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setText("ID Level");
-
-        combo_id_level.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        combo_id_level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih ID Anda", "1", "2", "3", "4", "5" }));
-
-        tabel_registasi.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        tabel_registasi.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
-        jScrollPane2.setViewportView(tabel_registasi);
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setText("Nama User");
 
         btn_input.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_input.setText("INPUT");
@@ -163,14 +103,59 @@ public class MenuRegistrasi extends javax.swing.JFrame {
         btn_logout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_logout.setText("LOGOUT");
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel6.setText("Nama User");
+        combo_id_level.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        combo_id_level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih ID Anda", "1", "2", "3", "4", "5" }));
 
-        text_namauser.addActionListener(new java.awt.event.ActionListener() {
+        tabel_registasi.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tabel_registasi.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
+        jScrollPane2.setViewportView(tabel_registasi);
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setText("ID Level");
+
+        text_password.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                text_namauserActionPerformed(evt);
+                text_passwordActionPerformed(evt);
             }
         });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel4.setText("Password");
+
+        text_username.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                text_usernameActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel3.setText("Usename");
+
+        text_IDUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                text_IDUserActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("ID User");
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("MENU REGISTASI");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -246,25 +231,25 @@ public class MenuRegistrasi extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void text_IDUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_IDUserActionPerformed
+    private void text_namauserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_namauserActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_text_IDUserActionPerformed
-
-    private void text_passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_passwordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_text_passwordActionPerformed
+    }//GEN-LAST:event_text_namauserActionPerformed
 
     private void btn_menubarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_menubarangActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_menubarangActionPerformed
 
+    private void text_passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_passwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_text_passwordActionPerformed
+
     private void text_usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_usernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_text_usernameActionPerformed
 
-    private void text_namauserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_namauserActionPerformed
+    private void text_IDUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_IDUserActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_text_namauserActionPerformed
+    }//GEN-LAST:event_text_IDUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -293,20 +278,6 @@ public class MenuRegistrasi extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -330,9 +301,7 @@ public class MenuRegistrasi extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable tabel_registasi;
     private javax.swing.JTextField text_IDUser;
     private javax.swing.JTextField text_namauser;
