@@ -12,7 +12,7 @@ import java.sql.Connection;
  * @author Asus
  */
 public class Koneksi {
-    private String url="jbdc:mysql://localhost/Toko";
+    private String url="jbdc:mysql://localhost/toko";
     private String username_xampp = "root";
     private String password_xampp = "";
     private Connection con;
