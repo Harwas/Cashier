@@ -7,6 +7,10 @@ package cashier;
 import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -14,16 +18,97 @@ import java.sql.ResultSet;
  */
 public class MenuTransaksi extends javax.swing.JFrame {
     private DefaultTableModel model = null;
-    private PreparedStatement stat;
-    private ResultSet rs;
+    public PreparedStatement stat;
+    public ResultSet rs;
+    Koneksi k = new Koneksi();
     //koneksi k = new koneksi();
     /**
      * Creates new form MenuTransaksi1
      */
     public MenuTransaksi() {
         initComponents();
+        k.connect();
+        refreshTable();
+        refreshCombo();
     }
 
+
+    class transaksi extends MenuTransaksi{
+        int id_transaksi, id_barang, harga, jumlah_beli, total_bayar;
+        String nama_pembeli, tanggal, nama_barang;
+    
+        public transaksi(){
+            this.nama_pembeli = text_namapembeli.getText();
+            String combo = combo_id_barang.getSelectedItem().toString();
+            String[] arr = combo.split(":");
+            this.id_barang = Integer.parseInt(arr[0]);
+            try{
+                Date date = text_tanggal.getDate();
+                DateFormat dateformat = new SimpleDateFormat("YYYY=MM-dd");
+                this.tanggal = dateformat.format(date);
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+            this.nama_barang = arr[1];
+            this.harga = Integer.parseInt(arr[2]);
+            this.jumlah_beli = Integer.parseInt(text_jumlahbeli.getText());
+            this.total_bayar = this.harga * this.jumlah_beli;
+        }
+     }   
+    public void refreshTable(){
+        model = new DefaultTableModel();
+        model.addColumn("ID Transaksi");
+        model.addColumn("Nama Pembeli");
+        model.addColumn("ID Barang");
+        model.addColumn("Tanggal");
+        model.addColumn("Nama Barang");
+        model.addColumn("Harga");
+        model.addColumn("Jumlah Beli");
+        model.addColumn("Total Bayar");
+        tabel_transaksi.setModel(model);
+        try{
+            this.stat = k.getCon().prepareStatement("select * from transaksi");
+            this.rs = this.stat.executeQuery();
+            while (rs.next()){
+                Object[] data={
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4),
+                    rs.getString(5),
+                    rs.getString(6),
+                    rs.getString(7),
+                    rs.getString(8),   
+                 };
+                model.addRow(data);
+            }
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        text_idtransaksi.setText("");
+        text_namapembeli.setText("");
+        text_jumlahbeli.setText("");
+        text_totalbayar.setText("");
+    }
+        
+        public void refreshCombo(){
+            try{
+                this.stat = k.getCon().prepareStatement("select * from barang "
+                + "where status='Tersedia'");
+                this.rs = this.stat.executeQuery();
+                while (rs.next()){
+                    combo_id_barang.addItem(rs.getString("id_barang")+":"+
+                    rs.getString("nama_barang")+":"+rs.getString("harga"));
+                }
+            }catch (Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+   
+    
+     
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -84,7 +169,11 @@ public class MenuTransaksi extends javax.swing.JFrame {
         jLabel5.setText("Tanggal Pembelian");
 
         combo_id_barang.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        combo_id_barang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
+        combo_id_barang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combo_id_barangActionPerformed(evt);
+            }
+        });
 
         tabel_transaksi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -98,16 +187,36 @@ public class MenuTransaksi extends javax.swing.JFrame {
             }
         ));
         tabel_transaksi.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
+        tabel_transaksi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabel_transaksiMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabel_transaksi);
 
         btn_input.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_input.setText("INPUT");
+        btn_input.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_inputActionPerformed(evt);
+            }
+        });
 
         btn_update.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_update.setText("UPDATE");
+        btn_update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_updateActionPerformed(evt);
+            }
+        });
 
         btn_delete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_delete.setText("DELETE");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         btn_cetakkuitansi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btn_cetakkuitansi.setText("CETAK KUITANSI");
@@ -146,6 +255,11 @@ public class MenuTransaksi extends javax.swing.JFrame {
 
         btn_logout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_logout.setText("LOGOUT");
+        btn_logout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_logoutActionPerformed(evt);
+            }
+        });
 
         btn_menubarang.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btn_menubarang.setText("LIHAT MENU ");
@@ -278,11 +392,104 @@ public class MenuTransaksi extends javax.swing.JFrame {
 
     private void btn_menubarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_menubarangActionPerformed
         // TODO add your handling code here:
+        MenuBarang barang = new MenuBarang();
+        barang.setVisible(true);
+        this.setVisible(false);
+        barang.btn_delete.setEnabled(true);
+        barang.btn_update.setEnabled(true);
+        barang.btn_transaksi.setEnabled(true);
+        barang.btn_input.setEnabled(true);
     }//GEN-LAST:event_btn_menubarangActionPerformed
 
     private void text_jumlahbeliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_jumlahbeliActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_text_jumlahbeliActionPerformed
+
+    private void combo_id_barangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_id_barangActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_combo_id_barangActionPerformed
+
+    private void btn_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inputActionPerformed
+        // TODO add your handling code here:
+        try{
+            transaksi tran = new transaksi();
+            text_totalbayar.setText(""+tran.total_bayar);
+            this.stat = k.getCon().prepareStatement("insert into transaksi values(?,?,?,?,?,?,?,?)");
+            this.stat.setInt(1, 0);
+            this.stat.setString(2, tran.nama_pembeli);
+            this.stat.setInt(3, tran.id_barang);
+            this.stat.setString(4, tran.tanggal);
+            this.stat.setString(5, tran.nama_barang);
+            this.stat.setInt(6, tran.harga);
+            this.stat.setInt(7, tran.jumlah_beli);
+            this.stat.setInt(8, tran.total_bayar);
+            int pilihan = JOptionPane.showConfirmDialog(null, 
+                    "Tanggal"+tran.tanggal+
+                    "\nNama Pembeli"+tran.nama_pembeli+
+                    "\nPembelian :"+tran.jumlah_beli+" "+tran.nama_barang+
+                    "\nTotal Bayar"+tran.total_bayar+"\n",
+                    "Tambahkan Transaksi?",
+                    JOptionPane.YES_NO_OPTION);
+            if (pilihan == JOptionPane.YES_OPTION){
+                this.stat.executeUpdate();
+                refreshTable();
+            }
+            else if (pilihan == JOptionPane.NO_OPTION){
+                refreshTable();
+            }
+        }catch (Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_btn_inputActionPerformed
+
+    private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
+        Login l = new Login();
+        l.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btn_logoutActionPerformed
+
+    private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
+        try{
+            transaksi tran = new transaksi();
+            tran.id_transaksi = Integer.parseInt(text_idtransaksi.getText());
+            this.stat = k.getCon().prepareStatement("update transaksi set nama_pembeli=?,"
+                + "id_barang=?,tanggal=?,nama_barang=?,harga=?,jumlah_beli=?,total_bayar=?"
+                + "where id_transaksi=?");
+            this.stat.setString(1, tran.nama_pembeli);
+            this.stat.setInt(2, tran.id_barang);
+            this.stat.setString(3, tran.tanggal);
+            this.stat.setString(4, tran.nama_barang);
+            this.stat.setInt(5, tran.harga);
+            this.stat.setInt(6, tran.jumlah_beli);
+            this.stat.setInt(7, tran.total_bayar); 
+            this.stat.setInt(8, tran.id_transaksi);
+            refreshTable();
+        }catch (Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_btn_updateActionPerformed
+
+    private void tabel_transaksiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabel_transaksiMouseClicked
+        text_idtransaksi.setText(model.getValueAt(tabel_transaksi.getSelectedRow(), 0).toString());
+        text_namapembeli.setText(model.getValueAt(tabel_transaksi.getSelectedRow(), 1).toString());
+        text_jumlahbeli.setText(model.getValueAt(tabel_transaksi.getSelectedRow(), 6).toString());
+        text_totalbayar.setText(model.getValueAt(tabel_transaksi.getSelectedRow(), 7).toString());
+    }//GEN-LAST:event_tabel_transaksiMouseClicked
+
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        try{
+            transaksi tran = new transaksi();
+            tran.id_transaksi = Integer.parseInt(text_idtransaksi.getText());
+            this.stat = k.getCon().prepareStatement("delete from transaksi"
+            + "where id_transaksi=?");
+            this.stat.setInt(1, tran.id_transaksi);
+            this.stat.executeUpdate();
+            refreshTable();
+        }catch (Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+    }//GEN-LAST:event_btn_deleteActionPerformed
 
     /**
      * @param args the command line arguments
