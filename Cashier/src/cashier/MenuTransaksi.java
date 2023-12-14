@@ -4,12 +4,19 @@
  */
 package cashier;
 
+import javax.swing.table.DefaultTableModel;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 /**
  *
  * @author ASUS
  */
 public class MenuTransaksi extends javax.swing.JFrame {
-
+    private DefaultTableModel model = null;
+    private PreparedStatement stat;
+    private ResultSet rs;
+    //koneksi k = new koneksi();
     /**
      * Creates new form MenuTransaksi1
      */
@@ -76,6 +83,7 @@ public class MenuTransaksi extends javax.swing.JFrame {
         jLabel5.setText("Tanggal Pembelian");
 
         combo_id_barang.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        combo_id_barang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
 
         tabel_transaksi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

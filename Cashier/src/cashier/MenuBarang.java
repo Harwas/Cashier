@@ -4,19 +4,69 @@
  */
 package cashier;
 
+import javax.swing.table.DefaultTableModel;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 /**
  *
  * @author ASUS
  */
 public class MenuBarang extends javax.swing.JFrame {
-
+    private DefaultTableModel model = null;
+    private PreparedStatement stat;
+    private ResultSet rs;
+    koneksi k = new koneksi();
     /**
      * Creates new form MenuBarang1
      */
     public MenuBarang() {
         initComponents();
+        k.connect();
+        refreshTable();
     }
 
+    
+    class barang extends MenuBarang{
+        int id_barang, harga;
+        String nama_barang, status;
+        
+        public barang(){
+            this.nama_barang = text_namabarang.getText();
+            this.harga = Integer.parseInt(text_harga_barang.getText());
+            this.status = combo_status_barang.getSelectedItem().toString();
+        }
+    }
+    
+    public void refreshTable(){
+        model = new DefaultTableModel();
+        model.addColumn("ID Barang");
+        model.addColumn("Nama Barang");
+        model.addColumn("Harga");
+        model.addColumn("Status Masakan");
+        tabel_barang.setModel(model);
+        try{
+            this.stat = k.getCon().PreparedStatement("select * from barang");
+            this.rs = this.stat.executeQuery();
+            while (rs.next()){
+                Object[] data={
+                  rs.getInt("id_barang"),
+                  rs.getString("nama_barang"),
+                  rs.getInt("harga"),
+                  rs.getString("status")
+                };
+                model.addRow(data);
+            }
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        text_idbarang.setText("");
+        text_namabarang.setText("");
+        text_harga_barang.setText("");
+        
+       
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -114,12 +164,27 @@ public class MenuBarang extends javax.swing.JFrame {
 
         btn_input.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_input.setText("INPUT");
+        btn_input.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_inputActionPerformed(evt);
+            }
+        });
 
         btn_update.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_update.setText("UPDATE");
+        btn_update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_updateActionPerformed(evt);
+            }
+        });
 
         btn_delete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_delete.setText("DELETE");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         btn_registrasi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btn_registrasi.setText("MENU REGISTASI");
@@ -166,6 +231,11 @@ public class MenuBarang extends javax.swing.JFrame {
             }
         ));
         tabel_barang.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
+        tabel_barang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabel_barangMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabel_barang);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -262,11 +332,15 @@ public class MenuBarang extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
-        // TODO add your handling code here:
+        Login l = new Login();
+        l.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btn_logoutActionPerformed
 
     private void btn_transaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_transaksiActionPerformed
-        // TODO add your handling code here:
+        MenuTransaksi tran = new MenuTransaksi();
+        tran.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btn_transaksiActionPerformed
 
     private void text_idbarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_idbarangActionPerformed
@@ -286,8 +360,63 @@ public class MenuBarang extends javax.swing.JFrame {
     }//GEN-LAST:event_combo_status_barangActionPerformed
 
     private void btn_registrasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_registrasiActionPerformed
-        // TODO add your handling code here:
+        MenuRegistrasi reg = new MenuRegistrasi();
+        reg.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btn_registrasiActionPerformed
+
+    private void btn_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inputActionPerformed
+        // TODO add your handling code here:
+        try{
+            barang b = new barang();
+            this.stat = k.getCon().prepareStatement("insert into barang values(?,?,?,?)");
+            stat.setInt(1, 0);
+            stat.setString(2, b.nama_barang);
+            stat.setInt(3, b.harga);
+            stat.setString(4, b.status);
+            stat.executeUpdate();
+            refreshTable();
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_btn_inputActionPerformed
+
+    private void tabel_barangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabel_barangMouseClicked
+        // TODO add your handling code here:
+        text_idbarang.setText(model.getValueAt(tabel_barang.getSelectedRow(), 0).toString());
+        text_namabarang.setText(model.getValueAt(tabel_barang.getSelectedRow(), 1).toString());
+        text_harga_barang.setText(model.getValueAt(tabel_barang.getSelectedRow(), 2).toString());
+    }//GEN-LAST:event_tabel_barangMouseClicked
+
+    private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
+        // TODO add your handling code here:
+        try {
+            barang b = new barang();
+            this.stat = k.getCon().preparedStatement("Update nama barang set nama_barang=?,"
+                    + "harga=?, status=?, where id_barang=?");
+            stat.setString(1, b.nama_barang);
+            stat.setInt(2, b.harga);
+            stat.setString(3, b.status);
+            stat.setInt(4,  Integer.parseInt(text_idbarang.getText()));
+            stat.executeUpdate();
+            refreshTable();
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_btn_updateActionPerformed
+
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        // TODO add your handling code here:
+        try{    
+            this.stat = k.getCon().prepareStatement("delete from barang where id_barang=?");
+            stat.setInt(1, Integer.parseInt(text_idbarang.getText()));
+            stat.executeUpdate();
+            refreshTable();
+        
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_btn_deleteActionPerformed
 
     /**
      * @param args the command line arguments
