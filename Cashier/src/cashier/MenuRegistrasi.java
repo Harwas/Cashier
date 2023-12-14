@@ -4,17 +4,69 @@
  */
 package cashier;
 
+import javax.swing.table.DefaultTableModel;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ASUS
  */
 public class MenuRegistrasi extends javax.swing.JFrame {
-
+    private DefaultTableModel model = null;
+    private PreparedStatement stat;
+    private ResultSet rs;
+    Koneksi k = new Koneksi();
     /**
      * Creates new form MenuRegistrasi1
      */
     public MenuRegistrasi() {
         initComponents();
+        k.connect();
+        refreshTable();
+    }
+    
+    class user extends MenuRegistrasi{
+        int id_user, id_level ;
+        String username, password, nama_user;
+        
+        public user(){
+            username = text_username.getText();
+            password = text_password.getText();
+            nama_user = text_namauser.getText();
+            id_level = Integer.parseInt(combo_id_level.getSelectedItem().toString());
+        }
+    }    
+    
+    public void refreshTable(){
+        model = new DefaultTableModel();
+        model.addColumn("ID User");
+        model.addColumn("Username");
+        model.addColumn("Password");
+        model.addColumn("Nama User");
+        model.addColumn("ID Level");
+        tabel_registasi.setModel(model);
+        try {
+            this.stat = k.getCon().prepareStatement("select * from user");
+            this.rs = this.stat.executeQuery();
+            while(rs.next()){
+                Object[] data = {
+                    rs.getString("id_user"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("nama_user"),
+                    rs.getString("id_level"),
+                };
+                model.addRow(data);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        text_IDUser.setText("");
+        text_username.setText("");
+        text_password.setText("");
+        text_namauser.setText("");
     }
 
     /**
@@ -59,12 +111,27 @@ public class MenuRegistrasi extends javax.swing.JFrame {
 
         btn_input.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_input.setText("INPUT");
+        btn_input.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_inputActionPerformed(evt);
+            }
+        });
 
         btn_update.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_update.setText("UPDATE");
+        btn_update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_updateActionPerformed(evt);
+            }
+        });
 
         btn_delete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_delete.setText("DELETE");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         btn_menubarang.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btn_menubarang.setText("MENU BARANG");
@@ -102,6 +169,11 @@ public class MenuRegistrasi extends javax.swing.JFrame {
 
         btn_logout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_logout.setText("LOGOUT");
+        btn_logout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_logoutActionPerformed(evt);
+            }
+        });
 
         combo_id_level.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         combo_id_level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih ID Anda", "1", "2", "3", "4", "5" }));
@@ -118,6 +190,11 @@ public class MenuRegistrasi extends javax.swing.JFrame {
             }
         ));
         tabel_registasi.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
+        tabel_registasi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabel_registasiMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabel_registasi);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -143,6 +220,7 @@ public class MenuRegistrasi extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Usename");
 
+        text_IDUser.setEnabled(false);
         text_IDUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 text_IDUserActionPerformed(evt);
@@ -237,6 +315,14 @@ public class MenuRegistrasi extends javax.swing.JFrame {
 
     private void btn_menubarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_menubarangActionPerformed
         // TODO add your handling code here:
+        MenuBarang barang = new MenuBarang();
+        barang.setVisible(true);
+        this.setVisible(false);
+        barang.btn_input.setEnabled(true);
+        barang.btn_delete.setEnabled(true);
+        barang.btn_update.setEnabled(true);
+        barang.btn_transaksi.setEnabled(true);
+        barang.btn_registrasi.setEnabled(true);
     }//GEN-LAST:event_btn_menubarangActionPerformed
 
     private void text_passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_passwordActionPerformed
@@ -250,6 +336,69 @@ public class MenuRegistrasi extends javax.swing.JFrame {
     private void text_IDUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_IDUserActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_text_IDUserActionPerformed
+
+    private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
+        // TODO add your handling code here:
+        Login l = new Login();
+        l.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btn_logoutActionPerformed
+
+    private void btn_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inputActionPerformed
+        // TODO add your handling code here:
+        try {
+            user u = new user();
+            this.stat = k.getCon().prepareStatement("insert into user values(?,?,?,?,?)");
+            stat.setInt(1, 0);
+            stat.setString(2, u.username);
+            stat.setString(3, u.password);
+            stat.setString(4, u.nama_user);
+            stat.setInt(5, u.id_level);
+            stat.executeUpdate();
+            refreshTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_btn_inputActionPerformed
+
+    private void tabel_registasiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabel_registasiMouseClicked
+        // TODO add your handling code here:
+        text_IDUser.setText(model.getValueAt(tabel_registasi.getSelectedRow(), 0).toString());
+        text_username.setText(model.getValueAt(tabel_registasi.getSelectedRow(), 1).toString());
+        text_password.setText(model.getValueAt(tabel_registasi.getSelectedRow(), 2).toString());
+        text_namauser.setText(model.getValueAt(tabel_registasi.getSelectedRow(), 3).toString());
+    }//GEN-LAST:event_tabel_registasiMouseClicked
+
+    private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
+        // TODO add your handling code here:
+        try {
+            user u = new user();
+            this.stat = k.getCon().prepareStatement("update user set username=?, "
+                    + "password=?, nama_user=?, id_level=? where id_user=?");
+            stat.setString(1, u.username);
+            stat.setString(2, u.password);
+            stat.setString(3, u.nama_user);
+            stat.setInt(4, u.id_level);
+            stat.setString(5, text_IDUser.getText());
+            stat.executeUpdate();
+            refreshTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,  e.getMessage());
+        }
+    }//GEN-LAST:event_btn_updateActionPerformed
+
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        // TODO add your handling code here:
+        try {
+            user u = new user();
+            this.stat = k.getCon().prepareStatement("delete from user where id_user=?");
+            stat.setString(1, text_IDUser.getText());
+            stat.executeUpdate();
+            refreshTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,  e.getMessage());
+        }
+    }//GEN-LAST:event_btn_deleteActionPerformed
 
     /**
      * @param args the command line arguments

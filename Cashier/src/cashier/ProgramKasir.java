@@ -9,5 +9,8 @@ package cashier;
  * @author ASUS
  */
 public class ProgramKasir {
-    
+    public static void main(String[] args) {
+        Login l = new Login();
+        l.setVisible(true);
+    }
 }

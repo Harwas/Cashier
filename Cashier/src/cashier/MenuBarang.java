@@ -16,7 +16,7 @@ public class MenuBarang extends javax.swing.JFrame {
     private DefaultTableModel model = null;
     private PreparedStatement stat;
     private ResultSet rs;
-    koneksi k = new koneksi();
+    Koneksi k = new Koneksi();
     /**
      * Creates new form MenuBarang1
      */
@@ -46,7 +46,7 @@ public class MenuBarang extends javax.swing.JFrame {
         model.addColumn("Status Masakan");
         tabel_barang.setModel(model);
         try{
-            this.stat = k.getCon().PreparedStatement("select * from barang");
+            this.stat = k.getCon().prepareStatement("select * from barang");
             this.rs = this.stat.executeQuery();
             while (rs.next()){
                 Object[] data={
@@ -392,7 +392,7 @@ public class MenuBarang extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             barang b = new barang();
-            this.stat = k.getCon().preparedStatement("Update nama barang set nama_barang=?,"
+            this.stat = k.getCon().prepareStatement("Update nama barang set nama_barang=?,"
                     + "harga=?, status=?, where id_barang=?");
             stat.setString(1, b.nama_barang);
             stat.setInt(2, b.harga);
