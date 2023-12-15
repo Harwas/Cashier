@@ -43,7 +43,7 @@ public class MenuBarang extends javax.swing.JFrame {
         model.addColumn("ID Barang");
         model.addColumn("Nama Barang");
         model.addColumn("Harga");
-        model.addColumn("Status Masakan");
+        model.addColumn("Status Barang");
         tabel_barang.setModel(model);
         try{
             this.stat = k.getCon().prepareStatement("select * from barang");
